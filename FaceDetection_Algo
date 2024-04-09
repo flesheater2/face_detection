@@ -1,0 +1,35 @@
+import cv2
+import numpy as np
+
+        
+cam = cv2.VideoCapture(0)
+width = 640
+height = 720
+height = 720
+cam.set(cv2.CAP_PROP_FRAME_WIDTH,width)
+cam.set(cv2.CAP_PROP_FRAME_HEIGHT,height)
+cam.set(cv2.CAP_PROP_FPS,30)
+
+
+faceCascade = cv2.CascadeClassifier(r"D:\AI\Haar\haarcascade_frontalface_alt2.xml")
+
+while True:
+
+    ignore,frame = cam.read()
+    grayframe =cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+    #print(frame)
+
+    x = faceCascade.detectMultiScale(grayframe,scaleFactor=1.5 , minNeighbors=5 , minSize=(30,30))
+    print(x)
+    for (x,y,w,h) in x:
+        cv2.rectangle(frame , (x,y) , (x+w,y+h) , (125,0,0) , 2 )
+
+
+    cv2.imshow('camera-M',frame)
+
+    
+    if cv2.waitKey(1) & 0xff == ord('q'):
+        break
+
+cam.release()
+cv2.destroyAllWindows()
